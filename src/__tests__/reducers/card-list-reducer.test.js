@@ -8,6 +8,18 @@ describe('cardListReducer', () => {
     details: 'test details',
     id: 1,
   };
+  const currentState = {
+    1: {
+      prompt: 'test prompt',
+      details: 'test details',
+      id: 1
+    },
+    2: {
+      prompt: 'test2 prompt',
+      details: 'test2 details',
+      id: 2
+    }
+  }
   
   test('Should return default state if no action type passed into the reducer', () => {
     expect(cardListReducer({}, { type: null })).toEqual({});
@@ -25,6 +37,20 @@ describe('cardListReducer', () => {
         prompt,
         details,
         id
+      }
+    });
+  });
+
+  test('should correctly delete a card', () => {
+    action = {
+      type: 'DELETE_CARD',
+      id:1
+    };
+    expect(cardListReducer(currentState, action)).toEqual({
+      2: {
+        prompt: 'test2 prompt',
+        details: 'test2 details',
+        id: 2
       }
     });
   });
