@@ -12,7 +12,6 @@ describe('cardListReducer', () => {
   test('Should return default state if no action type passed into the reducer', () => {
     expect(cardListReducer({}, { type: null })).toEqual({});
   })
-
   test('Should add a card to the masterCardList', () => {
     const { prompt, details, id } = cardData;
     action = {

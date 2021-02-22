@@ -1,3 +1,17 @@
 export default (state = {}, action) => {
-  return state;
+  const {prompt, details, id} = action;
+  switch(action.type){
+    case 'ADD_CARD':
+      return Object.assign({}, state, {
+        [id]: {
+          prompt,
+          details,
+          id
+        }
+      });
+    default:
+      return state;
+  }
+  
+
 };
