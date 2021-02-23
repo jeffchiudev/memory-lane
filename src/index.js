@@ -6,8 +6,7 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import firebase from './firebase';
 import { createStore } from 'redux';
-//import rootReducer from './reducers/index';
-import reducer from './reducers/card-list-reducer'
+import rootReducer from './reducers/index';
 import { Provider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
@@ -17,7 +16,7 @@ const store = createStore(rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 const rrfProps = {
-  firebasee,
+  firebase,
   config: {
     userProfile: "users"
   },

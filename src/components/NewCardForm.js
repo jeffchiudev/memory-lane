@@ -29,7 +29,7 @@ function NewCardForm(props){
 }
 
 NewCardForm.propTypes = {
-  oonNewCardCreation: PropTypes.func
+  onNewCardCreation: PropTypes.func
 };
 
 export default NewCardForm;

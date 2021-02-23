@@ -5,40 +5,89 @@ import CardDetail from './CardDetail';
 import EditCardForm from './EditCardForm';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-//put actions here
-import { withFirestore } from 'react-redux-firebase';
+import * as a from './../actions/index';
+import { withFirestore, isLoaded } from 'react-redux-firebase';
 
 class CardControl extends React.Component {
-  //constructor
 
   handleClick = () => {
     if (this.props.selectedCard != null) {
       const {dispatch} = this.props;
-      const action = {type: 'DESELECT_CARD'}
+      const action = a.deselectCard();
       dispatch(action);
-      // const action2 = {type: 'TOGGLE_EDIT'}
-      // dispatch(action2);
+      const action2 = a.toggleEdit();
+      dispatch(action2);
     } else {
       const {dispatch} = this.props
-      const action = { type: 'TOGGLE_FORM'}
+      const action = a.toggleForm();
       dispatch(action);
     }
   }
 
-  handleAddingNewCardToList = () => {
-    const {dispatch} = this.props;
-    const action = {type: 'TOGGLE_FORM'}
+  handleEditClick = () => {
+    const { dispatch } = this.props;
+    const action = a.toggleEdit();
     dispatch(action);
   }
+
+  handleAddingNewCardToList = (newCard) => {
+    const {dispatch} = this.props;
+    // const action = a.addCard(newCard)
+    // dispatch(action);
+    const action2 = a.toggleForm();
+    dispatch(action2);
+  }
+
+  handleChangingSelectedCard = (id) => {
+    this.props.firestore.get({collection: 'cards', doc: id}).then((card) => {
+      const {dispatch} = this.props;
+      const firestoreCard = {
+        prompt: card.get("prompt"),
+        details: card.get("details"),
+        id: card.id
+      }
+      const action = a.selectCard(firestoreCard);
+      dispatch(action);
+    }); 
+  }
+
+  handleEditCardInList = (cardToEdit) => {
+    const { dispatch } = this.props;
+    const action = a.toggleEdit();
+    dispatch(action);
+  }
+
+  
 
   render() {
     let currentlyVisibleState = null;
     let buttonText = null;
-    if (this.props.formVisibleOnPage) {
+    console.log(this.props.editingVisibleOnPage);
+    
+    if(this.props.editingVisibleOnPage) {
+      currentlyVisibleState = 
+      <EditCardForm 
+        card = {this.props.selectedCard}
+        onEditCard = {this.handleEditingCardInList}
+      />
+      buttonText = "Return to Card List"
+    } else if(this.props.selectedCard != null){
+      console.log("hello")
+      currentlyVisibleState = 
+      <CardDetail
+        card = {this.props.selectedCard}
+        //onClickingDelete = {this.handleDeletingCard}
+        onClickingEdit = {this.handleEditClick} 
+      />
+      buttonText = "Return to Card List"
+    } else if (this.props.formVisibleOnPage) {
       currentlyVisibleState = <NewCardForm  onNewCardCreation = {this.handleAddingNewCardToList} />;
-      buttonText = "Return to List";
+      buttonText = "Return to Card List";
     } else {
-      currentlyVisibleState= <CardList cardList = {this.props.masterCardList} onCardSelection = {this.handleChangingSelectedCard}/>;
+      currentlyVisibleState= 
+      <CardList 
+        cardList = {this.props.masterCardList} 
+        onCardSelection = {this.handleChangingSelectedCard}/>;
       buttonText = "Add Card";
     }
     return (
@@ -51,13 +100,18 @@ class CardControl extends React.Component {
 }
 
 CardControl.propTypes = {
-  masterCardList: PropTypes.object
+  masterCardList: PropTypes.object,
+  formVisibleOnPage: PropTypes.bool,
+  selectedCard: PropTypes.object,
+  editingVisibleOnPage: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     masterCardList: state.masterCardList,
-    formVisibleOnPage: state.formVisibleOnPage
+    formVisibleOnPage: state.formVisibleOnPage,
+    selectedCard: state.selectedCard,
+    editingVisibleOnPage: state.editingVisibleOnPage
   }
 }
 

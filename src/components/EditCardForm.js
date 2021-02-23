@@ -14,7 +14,7 @@ function EditCardForm(props){
       prompt: event.target.prompt.value,
       details: event.target.details.value,
     }
-    return firestore.collection('cards').doc(id).update(propertiesToUpdate)
+    return firestore.collection('cards').doc(card.id).update(propertiesToUpdate)
   }
 
   return (
@@ -27,7 +27,7 @@ function EditCardForm(props){
 }
 
 EditCardForm.propTypes = {
-  onEditTicket: PropTypes.func
+  onEditCard: PropTypes.func
 };
 
 export default EditCardForm;

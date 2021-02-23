@@ -4,7 +4,7 @@ export const addCard = (card) => {
   const {prompt, details, id} = card;
   return {
     type: c.ADD_CARD,
-    prompt,
+    prompt: prompt,
     details,
     id
   }
@@ -23,8 +23,9 @@ export const toggleEdit = () => ({
   type: c.TOGGLE_EDIT
 });
 
-export const selectCard = () => ({
-  type: c.SELECT_CARD
+export const selectCard = (card) => ({
+  type: c.SELECT_CARD,
+  card
 });
 
 export const deselectCard = () => ({
