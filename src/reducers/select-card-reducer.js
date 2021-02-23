@@ -4,11 +4,13 @@ export default (state= null, action) => {
     case 'SELECT_CARD':
       return {
         [id] : {
-        prompt,
-        details,
-        id
+          prompt,
+          details,
+          id
         }
       };
+    case 'DESELECT_CARD':
+      return null;
     default:
       return state; 
   }

@@ -27,6 +27,12 @@ describe('selectCardReducer', () => {
         details,
         id
       }
-    })
+    });
+  });
+  test('Should return null when DESELECT_CARD is called', () => {
+    const action = {
+      type: 'DESELECT_CARD'
+    }
+    expect(selectCardReducer({}, action)).toEqual(null);
   });
 });
