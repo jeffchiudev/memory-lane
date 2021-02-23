@@ -12,5 +12,5 @@ describe('rootReducer', () => {
       formVisibleOnPage: false,
     });
   });
-  
+
 });
