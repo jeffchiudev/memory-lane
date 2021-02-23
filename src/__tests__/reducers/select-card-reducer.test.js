@@ -16,11 +16,17 @@ describe('selectCardReducer', () => {
   test('Should return selected card when SELECT_CARD is called', () => {
     const { prompt, details, id } = card;
     const action = {
-      types: 'SELECT_CARD',
+      type: 'SELECT_CARD',
       prompt,
       details,
       id
     }
-    expect(selectCardReducer({}, action)).toEqual(card)
+    expect(selectCardReducer({}, action)).toEqual({
+      [id] : {
+        prompt,
+        details,
+        id
+      }
+    })
   });
 });

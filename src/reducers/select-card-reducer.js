@@ -1,3 +1,15 @@
 export default (state= null, action) => {
-  return state;
+  const {prompt, details, id} = action
+  switch(action.type) {
+    case 'SELECT_CARD':
+      return {
+        [id] : {
+        prompt,
+        details,
+        id
+        }
+      };
+    default:
+      return state; 
+  }
 }
