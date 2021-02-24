@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import { useFirestore } from 'react-redux-firebase';
 
 function EditCardForm(props){
+
   const firestore = useFirestore();
-  const { card } = props;
+
+  const { card, onEditCard } = props;
 
   function handleEditCardFormSubmission(event) {
     event.preventDefault();
@@ -14,7 +16,7 @@ function EditCardForm(props){
       prompt: event.target.prompt.value,
       details: event.target.details.value,
     }
-    return firestore.collection('cards').doc(card.id).update(propertiesToUpdate)
+    return firestore.update({collection:'cards', doc: card.id}, propertiesToUpdate)
   }
 
   return (

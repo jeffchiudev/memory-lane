@@ -51,18 +51,24 @@ class CardControl extends React.Component {
     }); 
   }
 
-  handleEditCardInList = (cardToEdit) => {
+  handleEditingCardInList = () => {
     const { dispatch } = this.props;
     const action = a.toggleEdit();
     dispatch(action);
+    const action2 = a.deselectCard();
+    dispatch(action2);
   }
 
-  
+  handleDeletingCard = (id) => {
+    this.props.firestore.delete({collection: 'cards', doc: id});
+    const {dispatch} = this.props;
+    const action = a.deselectCard();
+    dispatch(action);
+  }
 
   render() {
     let currentlyVisibleState = null;
     let buttonText = null;
-    console.log(this.props.editingVisibleOnPage);
     
     if(this.props.editingVisibleOnPage) {
       currentlyVisibleState = 
@@ -76,7 +82,7 @@ class CardControl extends React.Component {
       currentlyVisibleState = 
       <CardDetail
         card = {this.props.selectedCard}
-        //onClickingDelete = {this.handleDeletingCard}
+        onClickingDelete = {this.handleDeletingCard}
         onClickingEdit = {this.handleEditClick} 
       />
       buttonText = "Return to Card List"
