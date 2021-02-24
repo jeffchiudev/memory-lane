@@ -13,10 +13,12 @@ class CardControl extends React.Component {
   handleClick = () => {
     if (this.props.selectedCard != null) {
       const {dispatch} = this.props;
+
       const action = a.deselectCard();
       dispatch(action);
-      const action2 = a.toggleEdit();
-      dispatch(action2);
+
+      // const action2 = a.toggleEdit();
+      // dispatch(action2);
     } else {
       const {dispatch} = this.props
       const action = a.toggleForm();
@@ -61,6 +63,8 @@ class CardControl extends React.Component {
 
   handleDeletingCard = (id) => {
     this.props.firestore.delete({collection: 'cards', doc: id});
+
+
     const {dispatch} = this.props;
     const action = a.deselectCard();
     dispatch(action);
