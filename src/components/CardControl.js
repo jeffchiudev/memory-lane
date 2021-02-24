@@ -67,41 +67,58 @@ class CardControl extends React.Component {
   }
 
   render() {
-    let currentlyVisibleState = null;
-    let buttonText = null;
-    
-    if(this.props.editingVisibleOnPage) {
-      currentlyVisibleState = 
-      <EditCardForm 
-        card = {this.props.selectedCard}
-        onEditCard = {this.handleEditingCardInList}
-      />
-      buttonText = "Return to Card List"
-    } else if(this.props.selectedCard != null){
-      console.log("hello")
-      currentlyVisibleState = 
-      <CardDetail
-        card = {this.props.selectedCard}
-        onClickingDelete = {this.handleDeletingCard}
-        onClickingEdit = {this.handleEditClick} 
-      />
-      buttonText = "Return to Card List"
-    } else if (this.props.formVisibleOnPage) {
-      currentlyVisibleState = <NewCardForm  onNewCardCreation = {this.handleAddingNewCardToList} />;
-      buttonText = "Return to Card List";
-    } else {
-      currentlyVisibleState= 
-      <CardList 
-        cardList = {this.props.masterCardList} 
-        onCardSelection = {this.handleChangingSelectedCard}/>;
-      buttonText = "Add Card";
+    const auth = this.props.firebase.auth();
+    if (!isLoaded(auth)) {
+      return (
+        <>
+          <h1>Loading...</h1>
+        </>
+      )
     }
-    return (
-      <>
-        {currentlyVisibleState}
-        <button className="btn btn-secondary" onClick={this.handleClick}>{buttonText}</button>
-      </>
-    );
+    if ((isLoaded(auth)) && (auth.currentUser == null )) {
+      return (
+        <>
+          <h1>You must be signed in to access flash cards.</h1>
+        </>
+      )
+    }
+    if ((isLoaded(auth)) && (auth.currentUser != null)) {
+      let currentlyVisibleState = null;
+      let buttonText = null;
+      
+      if(this.props.editingVisibleOnPage) {
+        currentlyVisibleState = 
+        <EditCardForm 
+          card = {this.props.selectedCard}
+          onEditCard = {this.handleEditingCardInList}
+        />
+        buttonText = "Return to Card List"
+      } else if(this.props.selectedCard != null){
+        console.log("hello")
+        currentlyVisibleState = 
+        <CardDetail
+          card = {this.props.selectedCard}
+          onClickingDelete = {this.handleDeletingCard}
+          onClickingEdit = {this.handleEditClick} 
+        />
+        buttonText = "Return to Card List"
+      } else if (this.props.formVisibleOnPage) {
+        currentlyVisibleState = <NewCardForm  onNewCardCreation = {this.handleAddingNewCardToList} />;
+        buttonText = "Return to Card List";
+      } else {
+        currentlyVisibleState= 
+        <CardList 
+          cardList = {this.props.masterCardList} 
+          onCardSelection = {this.handleChangingSelectedCard}/>;
+        buttonText = "Add Card";
+      }
+      return (
+        <>
+          {currentlyVisibleState}
+          <button className="btn btn-secondary" onClick={this.handleClick}>{buttonText}</button>
+        </>
+      );
+    } 
   }
 }
 
