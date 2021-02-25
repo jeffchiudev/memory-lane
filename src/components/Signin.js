@@ -9,9 +9,9 @@ import { withRouter, useHistory } from 'react-router-dom';
 function Signin(){  
   const auth = useState(firebase.auth());
   const history = useHistory();
-  console.log(history)
+  // console.log(history)
 
-  console.log(auth[0].currentUser);
+  // console.log(auth[0].currentUser);
 
   function doSignUp(event) {
     event.preventDefault();

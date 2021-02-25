@@ -6,7 +6,7 @@ function Card(props){
     <>
       <div className="card" id="card-list-item" onClick= {() => props.whenCardClicked(props.id)}>
         <h2 className="card-title">{props.prompt}</h2>
-        <p>{props.details}</p>
+        {/* <p>{props.details}</p> */}
       </div>
     </>
   );

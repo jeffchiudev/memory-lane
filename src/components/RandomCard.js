@@ -4,28 +4,28 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 
-function CardList(props){
-
+function RandomCard(props){
   useFirestoreConnect([
     { collection: 'cards' }
   ]);
+  // const {card} = props;
 
   const cards = useSelector(state => state.firestore.ordered.cards)
   // console.log(cards)
   //console.log(cards[])
-
+  // randomIndex = Math.floor(Math.random() * cards.length)
 
   if (isLoaded(cards)){
+    let randomIndex = Math.floor(Math.random() * cards.length)
+    let randomCard = cards[randomIndex];
+    console.log(randomIndex)
+    console.log(cards[randomIndex])
     return(
       <>
-      { cards.map((card) => {
-        return <Card
-          whenCardClicked = {props.onCardSelection}
-          prompt = {card.prompt}
-          details = {card.details}
-          id = {card.id}
-          key = {card.id} />
-      })}
+        <div className = "card">
+          <h2>{randomCard.prompt}</h2>
+          <h2>{randomCard.details}</h2>
+        </div>
       </>
     );
   } else {
@@ -37,8 +37,4 @@ function CardList(props){
   }
 }
 
-CardList.propTypes = {
-  onCardSelection: PropTypes.func
-};
-
-export default CardList;
+export default RandomCard;

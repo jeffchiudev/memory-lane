@@ -7,14 +7,23 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as a from './../actions/index';
 import { withFirestore, isLoaded } from 'react-redux-firebase';
+import RandomCard from './RandomCard';
 
 class CardControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      random: false
+    }
+  }
 
   handleClick = () => {
     if (this.props.selectedCard != null) {
       const {dispatch} = this.props;
       const action = a.deselectCard();
       dispatch(action);
+    } else if (this.state.random) {
+      this.setState({random: false});
     } else {
       const {dispatch} = this.props
       const action = a.toggleForm();
@@ -26,6 +35,10 @@ class CardControl extends React.Component {
     const { dispatch } = this.props;
     const action = a.toggleEdit();
     dispatch(action);
+  }
+
+  handleRandomClick = () => {
+    this.setState({random: true});
   }
 
   handleAddingNewCardToList = (newCard) => {
@@ -59,11 +72,13 @@ class CardControl extends React.Component {
 
   handleDeletingCard = (id) => {
     this.props.firestore.delete({collection: 'cards', doc: id});
-
-
     const {dispatch} = this.props;
     const action = a.deselectCard();
     dispatch(action);
+  }
+
+  handleSelectingRandomCard = () => {
+    
   }
 
   render() {
@@ -93,8 +108,13 @@ class CardControl extends React.Component {
           onEditCard = {this.handleEditingCardInList}
         />
         buttonText = "Return to Card List"
-      } else if(this.props.selectedCard != null){
-        console.log("hello")
+      } else if (this.state.random){
+        currentlyVisibleState = 
+          <RandomCard 
+          card = {this.props.selectedCard}
+          />
+          buttonText= "Return to List"
+      } else if (this.props.selectedCard != null){
         currentlyVisibleState = 
         <CardDetail
           card = {this.props.selectedCard}
@@ -116,6 +136,7 @@ class CardControl extends React.Component {
         <>
           {currentlyVisibleState}
           <button className="btn btn-secondary" onClick={this.handleClick}>{buttonText}</button>
+          <button className="btn btn-secondary" onClick = {this.handleRandomClick}>Random!</button>
         </>
       );
     } 
