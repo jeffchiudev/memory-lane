@@ -39,6 +39,9 @@ class CardControl extends React.Component {
 
   handleRandomClick = () => {
     this.setState({random: true});
+    const {dispatch} = this.props;
+    const action = a.deselectCard();
+    dispatch(action);
   }
 
   handleAddingNewCardToList = (newCard) => {
@@ -59,6 +62,8 @@ class CardControl extends React.Component {
       }
       const action = a.selectCard(firestoreCard);
       dispatch(action);
+      this.setState({random: false});
+      console.log(this.state.random);
     }); 
   }
 
@@ -108,13 +113,7 @@ class CardControl extends React.Component {
           onEditCard = {this.handleEditingCardInList}
         />
         buttonText = "Return to Card List"
-      } else if (this.state.random){
-        currentlyVisibleState = 
-          <RandomCard 
-          card = {this.props.selectedCard}
-          />
-          buttonText= "Return to List"
-      } else if (this.props.selectedCard != null){
+      }  else if (this.props.selectedCard != null){
         currentlyVisibleState = 
         <CardDetail
           card = {this.props.selectedCard}
@@ -122,7 +121,14 @@ class CardControl extends React.Component {
           onClickingEdit = {this.handleEditClick} 
         />
         buttonText = "Return to Card List"
-      } else if (this.props.formVisibleOnPage) {
+      } else if (this.state.random){
+        currentlyVisibleState = 
+          <RandomCard 
+            card = {this.props.selectedCard}
+            whenCardClicked = {this.handleChangingSelectedCard}
+          />
+          buttonText= "Return to List"
+      }else if (this.props.formVisibleOnPage) {
         currentlyVisibleState = <NewCardForm  onNewCardCreation = {this.handleAddingNewCardToList} />;
         buttonText = "Return to Card List";
       } else {

@@ -20,11 +20,11 @@ function RandomCard(props){
     let randomCard = cards[randomIndex];
     console.log(randomIndex)
     console.log(cards[randomIndex])
+
     return(
       <>
-        <div className = "card">
+        <div className="card" id="card-list-item" onClick= {() => props.whenCardClicked(randomCard.id)}>
           <h2>{randomCard.prompt}</h2>
-          <h2>{randomCard.details}</h2>
         </div>
       </>
     );
@@ -35,6 +35,13 @@ function RandomCard(props){
       </>
     )    
   }
+}
+
+RandomCard.propTypes = {
+  whenCardClicked: PropTypes.func,
+  prompt: PropTypes.string.isRequired,
+  details: PropTypes.string.isRequired,
+  id: PropTypes.string,
 }
 
 export default RandomCard;
